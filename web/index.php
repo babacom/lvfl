@@ -94,9 +94,7 @@ $app->get('/room/:name', 'cors', function($name) use ($app) {
         
         // generate token
        // $token = $app->opentok->generateToken($session->getSessionId());
-    $token = $app->opentok->generateToken($session->getSessionId(), array(
-        'role' => Role::MODERATOR
-    ));
+    $token = $app->opentok->generateToken($session->getSessionId());
 
 
 
@@ -112,31 +110,54 @@ $app->get('/room/:name', 'cors', function($name) use ($app) {
 });
 
 /**
- * HOST TEST 
+ * GET /host/:name
  */
-$app->get('/host/:name', 'cors', function ($name) use ($app) {
-   $session = $app->opentok->createSession(array(
+$app->get('/host/:name', 'cors', function($name) use ($app) {
+
+    // if a room name is already associated with a session ID
+    if ($app->storage->exists($name)) {
+
+        // fetch the sessionId from local storage
+        $app->sessionId = $app->storage[$name];
+
+        // generate token
+        $token = $app->opentok->generateToken($app->sessionId, array(
+        'role' => Role::MODERATOR
+    ));
+        $responseData = array(
+            'apiKey' => $app->apiKey,
+            'sessionId' => $app->sessionId,
+            'token'=>$token
+        );
+
+        $app->response->headers->set('Content-Type', 'application/json');
+        echo json_encode($responseData);
+    }
+    else {
+        $session = $app->opentok->createSession(array(
             'mediaMode' => MediaMode::ROUTED
         ));
 
-     
         // store the sessionId into local
         $app->storage[$name] = $session->getSessionId();
-
+        
+        // generate token
+       // $token = $app->opentok->generateToken($session->getSessionId());
     $token = $app->opentok->generateToken($session->getSessionId(), array(
         'role' => Role::MODERATOR
     ));
 
-    $responseData = array(
+
+
+        $responseData = array(
             'apiKey' => $app->apiKey,
             'sessionId' => $session->getSessionId(),
             'token'=>$token
         );
 
-
-     $app->response->headers->set('Content-Type', 'application/json');
+        $app->response->headers->set('Content-Type', 'application/json');
         echo json_encode($responseData);
-
+    }
 });
 
 
