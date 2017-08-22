@@ -70,7 +70,7 @@ $app->get('/room/:name', 'cors', function($name) use ($app) {
         $app->sessionId = $app->storage[$name];
 
         // generate token
-        $token = $app->opentok->generateToken($app->sessionId, array('role'=>RoleConstants::MODERATOR));
+        $token = $app->opentok->generateToken($app->sessionId, array('role'=>Role::MODERATOR));
         $responseData = array(
             'apiKey' => $app->apiKey,
             'sessionId' => $app->sessionId,
@@ -89,7 +89,7 @@ $app->get('/room/:name', 'cors', function($name) use ($app) {
         $app->storage[$name] = $session->getSessionId();
         
         // generate token
-        $token = $app->opentok->generateToken($session->getSessionId(), array('role'=>RoleConstants::MODERATOR));
+        $token = $app->opentok->generateToken($session->getSessionId(),array('role'=>Role::MODERATOR));
         $responseData = array(
             'apiKey' => $app->apiKey,
             'sessionId' => $session->getSessionId(),
