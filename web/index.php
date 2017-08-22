@@ -1,5 +1,5 @@
 <?php
-
+ header("Access-Control-Allow-Origin: *");
 $autoloader = __DIR__.'/../vendor/autoload.php';
 
 if(!file_exists($autoloader)) {
@@ -93,8 +93,10 @@ $app->get('/room/:name', 'cors', function($name) use ($app) {
         $app->storage[$name] = $session->getSessionId();
         
         // generate token
-        $token = $app->opentok->generateToken($session->getSessionId());
-
+       // $token = $app->opentok->generateToken($session->getSessionId());
+    $token = $app->opentok->generateToken($session->getSessionId(), array(
+        'role' => Role::MODERATOR
+    ));
 
 
 
