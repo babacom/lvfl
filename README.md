@@ -13,7 +13,7 @@ Heroku is a PaaS (Platform as a Service) that can be used to deploy simple and s
 for free. To easily deploy this repository to Heroku, sign up for a Heroku account and click this
 button:
 
-<a href="https://heroku.com/deploy?template=https://github.com/opentok/learning-opentok-php" target="_blank">
+<a href="https://heroku.com/deploy?template=https://github.com/babacom/testing.git" target="_blank">
   <img src="https://www.herokucdn.com/deploy/button.png" alt="Deploy">
 </a>
 
@@ -28,7 +28,7 @@ obtain at the [TokBox Dashboard](https://dashboard.tokbox.com/keys).
 ## Installation & Running on localhost
 
   1. Clone the app by running the command
-  
+
 		  git clone git@github.com:opentok/learning-opentok-php.git
 
   2. `cd` to the root directory.
@@ -83,7 +83,7 @@ else {
 
     // store the sessionId into local
     $app->storage[$name] = $session->getSessionId();
-    
+
     // generate token
     $token = $app->opentok->generateToken($session->getSessionId());
     $responseData = array(
@@ -100,7 +100,7 @@ else {
 The `GET /session` routes generates a convenient session for fast establishment of communication.
 
 ```php
-$app->get('/session', 'cors', function () use ($app) { 
+$app->get('/session', 'cors', function () use ($app) {
     $app->redirect('/room/session');
 });
 ```
@@ -124,7 +124,7 @@ You can only create an archive for sessions that have at least one client connec
 the app will respond with an error.
 
 ### Stop an Archive
-    
+
 A `POST` request to the `/archive:archiveId/stop` route stops an archive recording.
 The archive ID is returned by call to the `archive/start` endpoint.
 
