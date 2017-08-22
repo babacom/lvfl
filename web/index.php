@@ -91,10 +91,14 @@ $app->get('/room/:name', 'cors', function($name) use ($app) {
         $app->storage[$name] = $session->getSessionId();
         
         // generate token
-        $token = $app->opentok->generateToken($session->getSessionId(),array('role' => Role::MODERATOR));
+        $token = $app->opentok->generateToken($session->getSessionId());
 
 
-
+$token = $session->generateToken(array(
+'role' => Role::MODERATOR,
+'expireTime' => time()+(7 * 24 * 60 * 60), // in one week
+'data' => 'name=tester'
+));
 
         $responseData = array(
             'apiKey' => $app->apiKey,
