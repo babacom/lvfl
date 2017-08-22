@@ -58,6 +58,9 @@ $app->get('/session', 'cors', function () use ($app) {
     $app->redirect('/room/session');
 });
 
+
+
+
 /**
  * GET /room/:name
  */
@@ -68,8 +71,6 @@ $app->get('/room/:name', 'cors', function($name) use ($app) {
 
         // fetch the sessionId from local storage
         $app->sessionId = $app->storage[$name];
-
- 
 
         // generate token
         $token = $app->opentok->generateToken($app->sessionId);
@@ -89,14 +90,10 @@ $app->get('/room/:name', 'cors', function($name) use ($app) {
 
         // store the sessionId into local
         $app->storage[$name] = $session->getSessionId();
-        $voptions = array(
-'role' => Role::MODERATOR,
-'expireTime' => time()+(7 * 24 * 60 * 60), 
-'data' => 'name=tester'
-);
-
+        
         // generate token
-        $token = $app->opentok->generateToken($session->getSessionId(),$voptions);
+        $token = $app->opentok->generateToken($session->getSessionId());
+
 
 
 
@@ -110,6 +107,35 @@ $app->get('/room/:name', 'cors', function($name) use ($app) {
         echo json_encode($responseData);
     }
 });
+
+/**
+ * HOST TEST 
+ */
+$app->get('/host/:name', 'cors', function ($name) use ($app) {
+   $session = $app->opentok->createSession(array(
+            'mediaMode' => MediaMode::ROUTED
+        ));
+
+     
+        // store the sessionId into local
+        $app->storage[$name] = $session->getSessionId();
+
+    $token = $app->opentok->generateToken($session->getSessionId(), array(
+        'role' => Role::MODERATOR
+    ));
+
+    $responseData = array(
+            'apiKey' => $app->apiKey,
+            'sessionId' => $session->getSessionId(),
+            'token'=>$token
+        );
+
+
+     $app->response->headers->set('Content-Type', 'application/json');
+        echo json_encode($responseData);
+
+});
+
 
 /**
  * POST /archive/start
