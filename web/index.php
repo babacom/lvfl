@@ -230,18 +230,8 @@ $app->post('/broadcast/start', 'cors', function () use ($app) {
     $json = $app->request->getBody();
     $data = json_decode($json, true);
     $sessionId = $data['sessionId'];
-    $broadcast = $app->opentok->startBroadcast($sessionId, array(
-      'layout' =>array('type'=>'bestFit'),
-  "outputs"=>array(
-    "rtmp"=> array(
-      "id"=> "my-id",
-      "serverUrl"=>"rtmp://myserver/myapp",
-      "streamName"=> "my-stream-name"
-    )
-  )
-    ));
-    $app->response->headers->set('Content-Type', 'application/json');
-    echo $broadcast->toJson();
+    $broadcast = $opentok->startBroadcast($sessionId);
+    echo $sessionID;
 });
 
 
