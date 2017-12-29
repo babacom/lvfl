@@ -224,11 +224,8 @@ $app->get('/archive', 'cors', function() use ($app) {
 
 $app->post('/broadcast/start', 'cors', function () use ($app) {
     $json = $app->request->getBody();
-    $data = json_decode($json, true);
-    $sessionId = $data["sessionId"];
-    $broadcast = $app->opentok->startBroadcast($sessionId);
-    $app->response->headers->set('Content-Type', 'application/json');
-    echo json_encode($broadcast->jsonSerialize());
+
+    echo $json;
 });
 $app->post('/broadcast/stop', 'cors', function () use ($app) {
     $json = $app->request->getBody();
