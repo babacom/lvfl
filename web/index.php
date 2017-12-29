@@ -235,11 +235,9 @@ $app->post('/broadcast/start', 'cors', function () use ($app) {
     );
     $options = array_merge($defaults, array_intersect_key($options, $defaults));
     list($layout) = array_values($options);
-    Validators::validateSessionId($sessionId);
-    Validators::validateLayout($layout);
-    $archive = $app->opentok->startBroadcast($sessionId, $options);
+    $broadcast = $app->opentok->startBroadcast($sessionId, $options);
     $app->response->headers->set('Content-Type', 'application/json');
-    echo json_encode($archive->toJson());
+    echo json_encode($broadcast->toJson());
 });
 
  
