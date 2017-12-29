@@ -1,5 +1,5 @@
 <?php
- header("Access-Control-Allow-Origin: *");
+
 $autoloader = __DIR__.'/../vendor/autoload.php';
 
 if(!file_exists($autoloader)) {
