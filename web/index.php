@@ -223,12 +223,20 @@ $app->get('/archive', 'cors', function() use ($app) {
 
 
 $app->post('/broadcast/start', 'cors', function () use ($app) {
-      $json = $app->request->getBody();
+    $json = $app->request->getBody();
     $data = json_decode($json, true);
-    $sessionId = $data["sessionId"];
-    $broadcast = $app->opentok->startBroadcast($sessionId);
-    echo $json;
+    $sessionId = $data['sessionId'];
+    $defaults = array(
+        'layout' => 'bestfit'
+    );
+    $options = array_merge($defaults, array_intersect_key($options, $defaults));
+    list($layout) = array_values($options);
+
+    $broadcast = $app->opentok->startBroadcast($sessionId,$options);
+    $app->response->headers->set('Content-Type', 'application/json');
+  echo $sessionId;
 });
+
 $app->post('/broadcast/stop', 'cors', function () use ($app) {
     $json = $app->request->getBody();
     $data = json_decode($json, true);
