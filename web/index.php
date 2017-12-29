@@ -253,24 +253,20 @@ $app->get('/hls', 'cors', function () use ($app) {
 
  
 
-
 // Enable CORS functionality
 function cors() {
     header('Access-Control-Allow-Origin: *');
     header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
     header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
 }
-
 // return HTTP 200 for HTTP OPTIONS requests
 $app->map('/:routes+', 'cors', function($routes) {
     http_response_code( 200 );
 })->via('OPTIONS');
-
 // TODO: route to clear storage
 $app->post('/session/clear', 'cors', function() use ($app) {
     if ($app->storage instanceof APCStorage) {
         $app->storage->clear();
     }
 });
-
 $app->run();
