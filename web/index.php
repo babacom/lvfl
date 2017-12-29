@@ -227,12 +227,18 @@ $app->post('/broadcast/start', 'cors', function () use ($app) {
     $data = json_decode($json, true);
     $sessionId = $data['sessionId'];
     $defaults = array(
-        'layout' => Layout::getBestFit()
-    );
-    $options = array_merge($defaults, array_intersect_key($options, $defaults));
-    list($layout) = array_values($options);
-
-    $broadcast = $app->opentok->startBroadcast($sessionId,$options);
+  "layout"=>array("type"=>"bestFit"),
+  "outputs"=>array(
+    "rtmp"=> array(
+      "id"=> "my-id",
+      "serverUrl"=>"rtmp://myserver/myapp",
+      "streamName"=> "my-stream-name"
+    )
+  ) );
+        
+        
+ 
+    $broadcast = $app->opentok->startBroadcast($sessionId,$defaults);
     $app->response->headers->set('Content-Type', 'application/json');
   echo $sessionId;
 });
