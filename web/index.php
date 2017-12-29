@@ -229,18 +229,31 @@ $app->get('/archive', 'cors', function() use ($app) {
 $app->post('/broadcast/start', 'cors', function () use ($app) {
     $json = $app->request->getBody();
     $data = json_decode($json, true);
-    $sessionId = $data['sessionId'];
-    $defaults = array(
-        'layout' => Layout::getBestFit()
-    );
-    $options = array_merge($defaults, array_intersect_key($options, $defaults));
-    list($layout) = array_values($options);
-    $broadcast = $app->opentok->startBroadcast($sessionId, $options);
+    $sessionId = $data["sessionId"];
+    $broadcast = $app->opentok->startBroadcast($sessionId);
     $app->response->headers->set('Content-Type', 'application/json');
-    echo json_encode($broadcast->toJson());
+    echo json_encode($broadcast->jsonSerialize());
+});
+$app->post('/broadcast/stop', 'cors', function () use ($app) {
+    $json = $app->request->getBody();
+    $data = json_decode($json, true);
+    $broadcastId = $data["broadcastId"];
+    $broadcast = $app->opentok->stopBroadcast($broadcastId);
+    $app->response->headers->set('Content-Type', 'application/json');
+    echo json_encode($broadcast->jsonSerialize());
+});
+$app->get('/broadcast/:broadcastId', 'cors', function ($broadcastId) use ($app) {
+    $broadcast = $app->opentok->getBroadcast($broadcastId);
+    $app->response->headers->set('Content-Type', 'application/json');
+    echo json_encode($broadcast->jsonSerialize());
+});
+$app->get('/hls', 'cors', function () use ($app) {
+    $url = $app->request()->params('url');
+    $availableAt = $app->request()->params('availableAt');
+    $data ='{"url":"' . $url . '","availableAt":"' . $availableAt . '"}';
+    $app->render('hls.php', array('data' => $data));
 });
 
- 
 
  
 
