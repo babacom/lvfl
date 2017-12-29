@@ -237,10 +237,7 @@ $app->post('/broadcast/start', 'cors', function () use ($app) {
   ) );
         
         
- 
-    $broadcast = $app->opentok->startBroadcast($sessionId,$defaults);
-    $app->response->headers->set('Content-Type', 'application/json');
-  echo $sessionId;
+
 });
 
 $app->post('/broadcast/stop', 'cors', function () use ($app) {
