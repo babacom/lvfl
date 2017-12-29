@@ -219,26 +219,26 @@ $app->get('/archive', 'cors', function() use ($app) {
     }
     echo json_encode($result);
 });
-
+ 
 
 $app->post('/broadcast/start', 'cors', function () use ($app) {
     $json = $app->request->getBody();
     $data = json_decode($json, true);
     $sessionId = $data['sessionId'];
-    $defaults = array(
-  "layout"=>array("type"=>"bestFit"),
+    $broadcast = $app->opentok->startBroadcast($sessionId, array(
+      'layout' =>array('type'=>'bestFit'),
   "outputs"=>array(
     "rtmp"=> array(
       "id"=> "my-id",
       "serverUrl"=>"rtmp://myserver/myapp",
       "streamName"=> "my-stream-name"
     )
-  ) );
-        
-         
-    $broadcast = $app->opentok->startBroadcast($sessionId,$defaults);
-  
+  )
+    ));
+    $app->response->headers->set('Content-Type', 'application/json');
+    echo $broadcast->toJson();
 });
+
 
 $app->post('/broadcast/stop', 'cors', function () use ($app) {
     $json = $app->request->getBody();
