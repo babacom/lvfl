@@ -230,7 +230,7 @@ $app->post('/broadcast/start', 'cors', function () use ($app) {
     $json = $app->request->getBody();
     $data = json_decode($json, true);
     $sessionId = $data['sessionId'];
-    $broadcast = $opentok->startBroadcast($sessionId);
+    $broadcast = $app->opentok->startBroadcast($sessionId);
     echo $sessionID;
 });
 
