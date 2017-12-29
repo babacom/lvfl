@@ -15,6 +15,15 @@ use OpenTok\OpenTok;
 use OpenTok\Role;
 use OpenTok\MediaMode;
 
+
+use OpenTok\Broadcast;
+use OpenTok\Layout;
+use OpenTok\OutputMode;
+use OpenTok\Util\Client;
+use OpenTok\Util\Validators;
+use OpenTok\Exception\UnexpectedValueException;
+use OpenTok\Exception\InvalidArgumentException;
+
 // PHP CLI webserver compatibility, serving static files
 $filename = __DIR__.preg_replace('#(\?.*)$#', '', $_SERVER['REQUEST_URI']);
 if (php_sapi_name() === 'cli-server' && is_file($filename)) {
@@ -219,6 +228,28 @@ $app->get('/archive', 'cors', function() use ($app) {
     }
     echo json_encode($result);
 });
+
+
+$app->post('/broadcast/start', 'cors', function () use ($app) {
+    $json = $app->request->getBody();
+    $data = json_decode($json, true);
+    $sessionId = $data['sessionId'];
+    $defaults = array(
+        'layout' => Layout::getBestFit()
+    );
+    $options = array_merge($defaults, array_intersect_key($options, $defaults));
+    list($layout) = array_values($options);
+    Validators::validateSessionId($sessionId);
+    Validators::validateLayout($layout);
+    $archive = $app->opentok->startBroadcast($sessionId, $options);
+    $app->response->headers->set('Content-Type', 'application/json');
+    echo json_encode($archive->toJson());
+});
+
+ 
+
+ 
+
 
 // Enable CORS functionality
 function cors() {
