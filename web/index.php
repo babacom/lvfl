@@ -14,10 +14,6 @@ use ICanBoogie\Storage\FileStorage;
 use OpenTok\OpenTok;
 use OpenTok\Role;
 use OpenTok\MediaMode;
-
-
-use OpenTok\Broadcast;
-use OpenTok\Layout;
  
 
 // PHP CLI webserver compatibility, serving static files
