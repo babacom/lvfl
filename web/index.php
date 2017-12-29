@@ -18,11 +18,7 @@ use OpenTok\MediaMode;
 
 use OpenTok\Broadcast;
 use OpenTok\Layout;
-use OpenTok\OutputMode;
-use OpenTok\Util\Client;
-use OpenTok\Util\Validators;
-use OpenTok\Exception\UnexpectedValueException;
-use OpenTok\Exception\InvalidArgumentException;
+ 
 
 // PHP CLI webserver compatibility, serving static files
 $filename = __DIR__.preg_replace('#(\?.*)$#', '', $_SERVER['REQUEST_URI']);
